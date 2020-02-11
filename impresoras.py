@@ -15,7 +15,7 @@ class Impresora:
     global semaforo
     time.sleep(0.5)
     logging.info(f'(Impresora {self.numero}) "{texto}"')
-    semaforo.release()
+  
 
 class Computadora(threading.Thread):
   def __init__(self, texto):
@@ -31,6 +31,7 @@ class Computadora(threading.Thread):
     impresora.imprimir(self.texto)
     # La vuelvo a dejar en la lista para que la use otro.
     impresorasDisponibles.append(impresora)
+    semaforo.release()
 
 impresorasDisponibles = []
 for i in range(3):

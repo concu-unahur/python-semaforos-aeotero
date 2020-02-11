@@ -18,6 +18,9 @@ class Cocinero(threading.Thread):
     while (True):
       logging.info('Reponiendo los platos...')
       platosDisponibles = 3
+      semCli.release()
+      semCli.release()
+      semCli.release()
 
 class Comensal(threading.Thread):
   def __init__(self, numero):
@@ -26,9 +29,9 @@ class Comensal(threading.Thread):
 
   def run(self):
     global platosDisponibles
+    semCli.acquire()
     platosDisponibles -= 1
     logging.info(f'¡Que rico! Quedan {platosDisponibles} platos')
-    semCos.release()
 
 
 platosDisponibles = 3
