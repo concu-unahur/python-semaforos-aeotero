@@ -4,6 +4,10 @@ import logging
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
+semCli = threading.Semaphore(3)
+semCos = threading.Semaphore(0)
+
+
 class Cocinero(threading.Thread):
   def __init__(self):
     super().__init__()
@@ -23,11 +27,13 @@ class Comensal(threading.Thread):
   def run(self):
     global platosDisponibles
     platosDisponibles -= 1
-    logging.info(f'¡Qué rico! Quedan {platosDisponibles} platos')
+    logging.info(f'¡Que rico! Quedan {platosDisponibles} platos')
+    semCos.release()
+
 
 platosDisponibles = 3
 
-Cocinero().start()
+Comensal().start()
 
 for i in range(5):
   Comensal(i).start()
